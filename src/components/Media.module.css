@@ -1,0 +1,28 @@
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--plate);
+  overflow: hidden;
+}
+.el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition:
+    opacity var(--dur-slow) var(--ease),
+    transform var(--dur-slow) var(--ease);
+}
+.loaded { opacity: 1; }
+
+/* 거의 인지되지 않는 반응: 0.7초 동안 2% */
+@media (hover: hover) and (pointer: fine) {
+  .frame:hover .el { transform: scale(1.02); }
+}
+
+@media (scripting: none) {
+  .el { opacity: 1; }
+}

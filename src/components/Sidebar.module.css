@@ -1,0 +1,124 @@
+.sidebar {
+  grid-column: 1 / span var(--side);
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  align-self: start;
+}
+.inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--rail-top) 0 var(--space-5);
+}
+
+/* 이름 블록 높이 = --head-h → 바로 아래 경력 블록 상단이 카드 상단과 같은 가로선 */
+.id {
+  min-height: var(--head-h);
+  line-height: var(--lh-ui);
+}
+/* 이름: 프로젝트 제목과 같은 크기·굵기 */
+.name {
+  display: block;
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  font-weight: var(--fw-strong);
+  letter-spacing: var(--tr-title);
+  margin-bottom: var(--space-1);
+}
+.muted { color: var(--ink-2); }
+
+/* 경력: 회사 | 기간 — 회사 열은 가장 긴 이름 폭, 줄 간격은 Works 목록과 동일 */
+.career {
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: var(--space-4);
+  justify-content: start;
+  margin-top: -3px;          /* 행 패딩만큼 올려 첫 줄 글자 상단 = 카드 상단 */
+  line-height: var(--lh-ui);
+}
+.careerRow { display: contents; }
+.careerRow > * { padding: 3px 0; }
+.careerRow dt { font-weight: var(--fw-strong); }   /* 회사명 강조 */
+.careerPeriod {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.works { margin-top: var(--space-7); }
+
+/* Works 라벨: 회사명과 같은 강조 */
+.label {
+  font-weight: var(--fw-strong);
+  line-height: var(--lh-ui);
+  margin-bottom: var(--space-2);
+}
+
+.list { display: grid; }
+.item {
+  display: grid;
+  grid-template-columns: 2.2em 1fr;
+  padding: 3px 0;
+  line-height: var(--lh-ui);
+  color: var(--ink);
+  transition: color var(--dur-fast) var(--ease);
+}
+/* 프로젝트명: 강조(600) */
+.text {
+  font-weight: var(--fw-strong);
+  transition: transform var(--dur-base) var(--ease);
+}
+/* 제목 뒤 '분류, 연도' — 보통 굵기, 한 단계 연하게 */
+.kind {
+  margin-left: 0.5em;
+  white-space: nowrap;       /* 길면 '분류, 연도'가 통째로 다음 줄로 */
+  font-weight: var(--fw-regular);
+  color: var(--ink-2);
+  transition: color var(--dur-fast) var(--ease);
+}
+.num {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+/* 현재(스크롤 위치) 또는 hover 항목만 primary */
+.hasFocus .item,
+.hasFocus .item .num,
+.hasFocus .item .kind { color: var(--ink-3); }
+.hasFocus .item.on { color: var(--ink); }
+.hasFocus .item.on .num,
+.hasFocus .item.on .kind { color: var(--ink-2); }
+/* hover: 2px 이동 — 누를 수 있다는 신호 */
+/* 숨은 글자: Works 와 About 사이 빈 곳 */
+.secret { left: 0; bottom: 96px; }
+
+@media (hover: hover) {
+  .item:hover .text { transform: translateX(2px); }
+}
+
+.about {
+  margin-top: auto;
+  align-self: flex-start;
+  color: var(--ink-2);
+  transition: color var(--dur-fast) var(--ease);
+}
+.aboutOn,
+.about:hover { color: var(--ink); }
+
+/* 모바일: 고정 해제, 맨 위 일반 블록 */
+@media (max-width: 680px) {
+  .secret { display: none; }
+  .sidebar {
+    grid-column: 1 / -1;
+    position: static;
+    height: auto;
+  }
+  .inner { padding-bottom: var(--space-8); }
+  .id { min-height: 0; margin-bottom: var(--space-6); }
+  .works { margin-top: var(--space-8); }
+  .about { margin-top: var(--space-5); }
+  .hasFocus .item,
+  .hasFocus .item .num { color: var(--ink); }
+  .hasFocus .item .kind { color: var(--ink-2); }
+}

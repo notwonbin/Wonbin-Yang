@@ -1,0 +1,5 @@
+.footer {
+  padding: var(--space-4) 0 var(--space-5);
+  font-size: var(--fs-caption);
+  color: var(--ink-2);
+}

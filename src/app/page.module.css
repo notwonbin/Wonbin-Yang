@@ -1,0 +1,11 @@
+/* 페이지 = 12열 그리드. Sidebar 1 → --side 열, Content 그 다음 → 12열 */
+.shell { align-items: start; }
+.main {
+  grid-column: calc(var(--side) + 1) / -1;
+  min-width: 0;
+  container-type: inline-size;   /* 헤더 열을 카드 폭 기준으로 계산하기 위해 */
+}
+
+@media (max-width: 680px) {
+  .main { grid-column: 1 / -1; }
+}

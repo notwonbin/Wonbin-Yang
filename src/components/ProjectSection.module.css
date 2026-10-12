@@ -1,0 +1,75 @@
+/*
+ * 헤더 열 = 카드 열: Title/Year → 1번 카드 · Meta → 2번 카드 · Description → 3번 카드부터
+ * (카드 폭과 같은 식: 갤러리는 콘텐츠 폭 + 오른쪽 margin 만큼 이어짐)
+ * 헤더 높이를 --head-h 로 고정 → 설명 길이와 무관하게 카드 위치 동일
+ */
+.section {
+  position: relative;
+  scroll-margin-top: var(--rail-top);
+  scroll-snap-align: start;
+  padding-bottom: var(--project-gap);
+}
+.section:first-of-type { padding-top: var(--rail-top); }
+
+.head {
+  --col: calc((100cqw + var(--margin) - var(--card-gaps) * var(--card-gap)) / var(--cards));
+  display: grid;
+  grid-template-columns: var(--col) var(--col) minmax(0, 1fr);
+  column-gap: var(--card-gap);
+  row-gap: var(--space-4);
+  align-items: first baseline;
+  align-content: start;
+  height: var(--head-h);
+}
+.head > div:first-child { grid-column: 1; }
+
+.title,
+.year {
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--tr-title);
+}
+.title { font-weight: var(--fw-medium); }
+.year { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.facts {
+  grid-column: 2;
+  display: grid;
+  row-gap: 3px;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-ui);
+}
+.facts > div {
+  display: grid;
+  grid-template-columns: 5.5em 1fr;
+  column-gap: var(--space-2);
+}
+.facts dt { font-size: var(--fs-caption); color: var(--ink-2); }
+
+.description {
+  grid-column: 3;
+  max-width: var(--measure);
+  font-size: var(--fs-meta);  /* 11px — Category·Role·Company 값과 같은 크기 */
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+  word-break: keep-all;  /* 한글이 단어 중간에서 줄바꿈되지 않게 */
+}
+
+/* 태블릿: 제목 한 줄 → 메타(1번 카드) | 설명(2번 카드부터) */
+@media (max-width: 1024px) {
+  .head { grid-template-columns: var(--col) minmax(0, 1fr); }
+  .head > div:first-child { grid-column: 1 / -1; }
+  .facts { grid-column: 1; }
+  .description { grid-column: 2; }
+}
+
+@media (max-width: 680px) {
+  .head { grid-template-columns: 1fr; }
+  .head > div:first-child,
+  .facts,
+  .description { grid-column: 1 / -1; }
+}
+
+/* 숨은 글자: 이 프로젝트 아래 여백(다음 프로젝트 전) 한가운데, --y 만큼 위아래로 흩어짐 */
+.secret { bottom: calc(var(--project-gap) / 2 - 12px + var(--y, 0px)); }
+

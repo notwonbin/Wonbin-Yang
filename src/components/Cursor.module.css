@@ -1,0 +1,87 @@
+/* 바깥(.cursor)은 위치만, 안쪽(.dot)은 크기만 바뀐다 */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  will-change: transform;
+}
+.cursor[data-visible] { opacity: 1; }
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* 점의 중심이 마우스 위치에 오도록 크기의 절반만큼 당겨 둠 */
+.dot {
+  --s: var(--cursor-size);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ink);
+  /* 어두운 이미지 위에서도 보이도록 아주 얇은 밝은 테두리 */
+  box-shadow: 0 0 0 1px rgb(244 244 242 / 0.55);
+  transition:
+    width var(--dur-base) var(--ease),
+    height var(--dur-base) var(--ease),
+    margin var(--dur-base) var(--ease),
+    background-color var(--dur-base) var(--ease),
+    box-shadow var(--dur-base) var(--ease);
+}
+
+/* 렌즈 화면 — 크기는 항상 렌즈 크기로 고정, 점이 커지면서 드러남 */
+.view {
+  --v: calc(var(--cursor-lens-size) + 6px); /* 원보다 살짝 크게 → 가장자리에 틈이 안 보이게 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--v);
+  height: var(--v);
+  margin: calc(var(--v) / -2) 0 0 calc(var(--v) / -2);
+  overflow: hidden;
+  background: var(--paper);
+  /* 평소(작은 점)에는 렌즈를 아예 그리지 않음 */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease), visibility 0s linear var(--dur-fast);
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* 글자 렌즈의 복제본 (Cursor.tsx 가 넣음) */
+.clone {
+  position: absolute !important;
+  margin: 0 !important;
+  pointer-events: none;
+}
+
+/* 카드·링크 위: 볼록렌즈 */
+.cursor[data-hover] .dot {
+  --s: var(--cursor-lens-size);
+  background: transparent;
+  box-shadow: none;
+}
+.cursor[data-hover] .view {
+  visibility: visible;
+  opacity: 1;
+  filter: url(#cursor-lens);
+  transition: opacity var(--dur-fast) var(--ease), visibility 0s;
+}
+
+/* 누르는 동안 살짝 작아짐 */
+.cursor[data-down] .dot { --s: calc(var(--cursor-size) * 0.7); }
+.cursor[data-hover][data-down] .dot { --s: calc(var(--cursor-lens-size) * 0.92); }

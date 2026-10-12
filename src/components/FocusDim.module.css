@@ -1,0 +1,43 @@
+/*
+ * 갤러리 위에 덮는 흐림 층 (FocusDim.tsx 가 위치를 맞춤)
+ * 흐림 세기가 다른 층 3개를 겹치고, 각 층을 --f0(흐림 시작) → --f1(화면 맨 아래) 사이
+ * 서로 다른 구간에서 나타나게 잘라 아래로 갈수록 점점 흐려 보이게 한다.
+ */
+.fade { display: none; }
+
+@media (min-width: 1025px) and (hover: hover) {
+  .fade {
+    --r: calc(var(--f1, 0px) - var(--f0, 0px));
+    display: block;
+    position: absolute;
+    left: -24px;                     /* FocusDim.tsx 의 BLEED 만큼 갤러리보다 넓게 */
+    right: calc(-1 * var(--margin)); /* 갤러리처럼 화면 오른쪽 끝까지 */
+    pointer-events: none;
+    z-index: 1;
+  }
+  .fade i {
+    position: absolute;
+    inset: 0;
+  }
+  /* 위에서 아래로: 아주 옅게 → 점점 세게. 각 층이 서로 겹치며 이어져 경계가 안 보이게 */
+  .fade i:nth-child(1) {
+    -webkit-backdrop-filter: blur(calc(var(--dim-blur) * 0.12));
+    backdrop-filter: blur(calc(var(--dim-blur) * 0.12));
+    mask-image: linear-gradient(to bottom, transparent var(--f0), #000 calc(var(--f0) + var(--r) * 0.3));
+  }
+  .fade i:nth-child(2) {
+    -webkit-backdrop-filter: blur(calc(var(--dim-blur) * 0.3));
+    backdrop-filter: blur(calc(var(--dim-blur) * 0.3));
+    mask-image: linear-gradient(to bottom, transparent calc(var(--f0) + var(--r) * 0.15), #000 calc(var(--f0) + var(--r) * 0.55));
+  }
+  .fade i:nth-child(3) {
+    -webkit-backdrop-filter: blur(calc(var(--dim-blur) * 0.6));
+    backdrop-filter: blur(calc(var(--dim-blur) * 0.6));
+    mask-image: linear-gradient(to bottom, transparent calc(var(--f0) + var(--r) * 0.4), #000 calc(var(--f0) + var(--r) * 0.8));
+  }
+  .fade i:nth-child(4) {
+    -webkit-backdrop-filter: blur(var(--dim-blur));
+    backdrop-filter: blur(var(--dim-blur));
+    mask-image: linear-gradient(to bottom, transparent calc(var(--f0) + var(--r) * 0.6), #000 var(--f1));
+  }
+}

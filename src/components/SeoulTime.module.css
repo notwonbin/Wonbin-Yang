@@ -1,0 +1,11 @@
+.time {
+  margin-left: 0.6em;
+  font-variant-numeric: tabular-nums;
+}
+.colon { animation: blink 1s steps(1, end) infinite; }
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .colon { animation: none; }
+}

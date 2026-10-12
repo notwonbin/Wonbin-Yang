@@ -1,0 +1,36 @@
+/*
+ * 카드 폭 = (보이는 폭 − 보이는 gap 수 × gap) ÷ 보이는 카드 수
+ * 트랙은 콘텐츠 시작선(제목과 같은 x)에서 화면 오른쪽 끝까지 이어진다.
+ */
+.track {
+  --card-w: calc((100cqw - var(--card-gaps) * var(--card-gap)) / var(--cards));
+  container-type: inline-size;
+  margin-right: calc(-1 * var(--margin));
+  display: flex;
+  gap: var(--card-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  outline: none;
+}
+.track::-webkit-scrollbar { display: none; }
+.track:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 6px; }
+
+.dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.dragging .card { pointer-events: none; }
+
+.card {
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+  aspect-ratio: var(--card-ratio);
+  scroll-snap-align: start;
+  border-radius: var(--radius-media);
+  overflow: hidden;
+}
+.card:last-child { margin-right: var(--margin); }

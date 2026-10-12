@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+.vercel
+
+# 원본 영상·이미지 (배포에 안 올림)
+_video_originals
+_to_delete
