@@ -43,12 +43,14 @@
 /* 렌즈 화면 — 크기는 항상 렌즈 크기로 고정, 점이 커지면서 드러남 */
 .view {
   --v: calc(var(--cursor-lens-size) + 6px); /* 원보다 살짝 크게 → 가장자리에 틈이 안 보이게 */
+  /* 2배 크기로 그리고 절반으로 줄여 보여줌 → 확대된 글자·이미지가 덜 깨짐 (Cursor.tsx 의 SS) */
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--v);
-  height: var(--v);
-  margin: calc(var(--v) / -2) 0 0 calc(var(--v) / -2);
+  width: calc(var(--v) * 2);
+  height: calc(var(--v) * 2);
+  margin: calc(var(--v) * -1) 0 0 calc(var(--v) * -1);
+  transform: scale(0.5);
   overflow: hidden;
   background: var(--paper);
   /* 평소(작은 점)에는 렌즈를 아예 그리지 않음 */
@@ -85,3 +87,42 @@
 /* 누르는 동안 살짝 작아짐 */
 .cursor[data-down] .dot { --s: calc(var(--cursor-size) * 0.7); }
 .cursor[data-hover][data-down] .dot { --s: calc(var(--cursor-lens-size) * 0.92); }
+
+/*
+ * 렌즈 테두리 — 커서와 따로 화면 위에 얹은 얇은 고리.
+ * 고리 모양 안쪽만 '바로 아래 화면'의 대비를 살짝 낮춰 보여줌 (backdrop-filter: contrast)
+ * → 밝은 색 위에선 살짝 진하게, 검정 위에선 살짝 밝게. 색감은 그대로라 배경과 차이가 미미함
+ */
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  pointer-events: none;
+}
+.ring span {
+  --s: calc(var(--cursor-lens-size) + 2px);
+  --w: var(--cursor-lens-ring-width);
+  --soft: var(--cursor-lens-ring-soft);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%;
+  -webkit-backdrop-filter: contrast(var(--cursor-lens-ring)) saturate(2);
+  backdrop-filter: contrast(var(--cursor-lens-ring)) saturate(2);
+  /* 가장자리 고리 모양만 남김 — 바깥선은 또렷, 안쪽은 --soft 만큼 부드럽게 번짐 */
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - var(--w) - var(--soft)), #000 calc(100% - var(--w)), #000 calc(100% - 0.5px), transparent 100%);
+  mask: radial-gradient(closest-side, transparent calc(100% - var(--w) - var(--soft)), #000 calc(100% - var(--w)), #000 calc(100% - 0.5px), transparent 100%);
+  opacity: 0;
+  transition:
+    opacity var(--dur-fast) var(--ease),
+    width var(--dur-base) var(--ease),
+    height var(--dur-base) var(--ease),
+    margin var(--dur-base) var(--ease);
+}
+.ring[data-visible][data-hover] span { opacity: 1; }
+.ring:not([data-hover]) span { --s: var(--cursor-size); }
+.ring[data-down] span { --s: calc(var(--cursor-lens-size) * 0.92 + 2px); }

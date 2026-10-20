@@ -87,15 +87,17 @@ function cloneWithStyles(src: Element) {
 
 export default function Cursor() {
   const dot = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
   const view = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const feImage = useRef<SVGFEImageElement>(null);
 
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    if (!fine.matches || !dot.current || !view.current || !canvas.current) return;
+    if (!fine.matches || !dot.current || !ring.current || !view.current || !canvas.current) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const el = dot.current;
+    const rg = ring.current; // 렌즈 테두리 (아래 색을 한 톤 진하게 — multiply)
     const vw = view.current;
     const cv = canvas.current;
     const g = cv.getContext("2d");
@@ -114,28 +116,39 @@ export default function Cursor() {
     let ctxEl: HTMLElement | null = null;    // 글자 렌즈: 비출 범위(원본)
     let clone: HTMLElement | null = null;    // 글자 렌즈: 그 복제본
 
-    // srcset 이미지는 naturalWidth 가 실제 픽셀과 다를 수 있어서, 같은 주소의 사본을 씀
-    const plain = new WeakMap<HTMLImageElement, HTMLImageElement>();
-    const bitmap = (im: HTMLImageElement) => {
-      let c = plain.get(im);
-      if (!c || c.src !== (im.currentSrc || im.src)) {
+    /*
+     * 렌즈 안 이미지는 확대되므로 화면용(작은) 이미지 대신 가장 큰 해상도 사본을 따로 불러 씀.
+     * (srcset 이미지는 naturalWidth 가 실제 픽셀과 다를 수 있어서 같은 주소의 사본을 씀)
+     * 큰 사본이 아직 로드 전이면 화면용 사본으로 대신 그림.
+     */
+    const hi = new WeakMap<HTMLImageElement, HTMLImageElement>();
+    const lo = new WeakMap<HTMLImageElement, HTMLImageElement>();
+    const load = (map: WeakMap<HTMLImageElement, HTMLImageElement>, im: HTMLImageElement, src: string) => {
+      let c = map.get(im);
+      if (!c || c.src !== new URL(src, location.href).href) {
         c = new Image();
-        c.src = im.currentSrc || im.src;
-        plain.set(im, c);
+        c.decoding = "async";
+        c.src = src;
+        map.set(im, c);
       }
       return c.complete && c.naturalWidth ? c : null;
     };
+    const bitmap = (im: HTMLImageElement) =>
+      load(hi, im, im.src) ?? load(lo, im, im.currentSrc || im.src);
 
-    const size = () => vw.offsetWidth; // 렌즈 크기(px) = --cursor-lens-size
+    // 렌즈 화면은 SS배 크기로 그린 뒤 줄여서 보여줌 → 확대·휘기에서 생기는 계단 현상을 줄임 (CSS .view 와 같은 값)
+    const SS = 2;
+    const size = () => vw.offsetWidth / SS; // 렌즈 크기(px) = --cursor-lens-size
 
     /** 렌즈 아래 영역의 이미지·영상을 그대로 캔버스에 옮겨 그림 (휘는 건 필터가) */
     const drawMedia = () => {
       if (!g) return;
       const W = size();
-      const d = Math.min(window.devicePixelRatio || 1, 2);
+      const d = Math.min(window.devicePixelRatio || 1, 2) * SS;
       const P = Math.round(W * d);
       if (cv.width !== P) { cv.width = P; cv.height = P; }
       g.setTransform(d, 0, 0, d, 0, 0);
+      g.imageSmoothingQuality = "high";
       g.fillStyle = paper;
       g.fillRect(0, 0, W, W);
       const L = x - W / 2, T = y - W / 2;
@@ -165,8 +178,8 @@ export default function Cursor() {
       if (!clone || !ctxEl) return;
       const b = ctxEl.getBoundingClientRect();
       const W = size();
-      clone.style.left = `${b.left - (x - W / 2)}px`;
-      clone.style.top = `${b.top - (y - W / 2)}px`;
+      clone.style.left = `${(b.left - (x - W / 2)) * SS}px`;
+      clone.style.top = `${(b.top - (y - W / 2)) * SS}px`;
     };
 
     /**
@@ -212,6 +225,8 @@ export default function Cursor() {
         clone = cloneWithStyles(ctxEl);
         clone.className += ` ${styles.clone}`;
         clone.style.width = `${ctxEl.getBoundingClientRect().width}px`;
+        clone.style.transform = `scale(${SS})`;   // 렌즈 화면이 SS배라 글자도 SS배로
+        clone.style.transformOrigin = "0 0";
         vw.appendChild(clone);
         placeClone();
       };
@@ -233,6 +248,7 @@ export default function Cursor() {
           active = false;
           delete el.dataset.hover;
           setKey(null, null);
+          kick(); // 테두리도 같이 끄도록 한 번 더 그림
         }, OFF_DELAY);
       }
     };
@@ -263,6 +279,10 @@ export default function Cursor() {
       x += (mx - x) * k;
       y += (my - y) * k;
       el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      rg.style.transform = el.style.transform;
+      for (const k of ["visible", "hover", "down"] as const) {
+        if (k in el.dataset) rg.dataset[k] = ""; else delete rg.dataset[k];
+      }
       if (active) { drawMedia(); placeClone(); }
       const moving = Math.abs(mx - x) + Math.abs(my - y) > 0.1;
       // 영상은 계속 바뀌므로 렌즈가 켜져 있는 동안 계속 그림
@@ -283,8 +303,8 @@ export default function Cursor() {
       kick();
     };
     const onScroll = () => { if (shown) { update(document.elementFromPoint(mx, my)); kick(); } };
-    const onDown = () => { el.dataset.down = ""; };
-    const onUp = () => { delete el.dataset.down; };
+    const onDown = () => { el.dataset.down = ""; kick(); };
+    const onUp = () => { delete el.dataset.down; kick(); };
     const onLeave = () => {
       shown = false;
       window.clearTimeout(offTimer);
@@ -293,6 +313,7 @@ export default function Cursor() {
       delete el.dataset.hover;
       setKey(null, null);
       delete el.dataset.visible;
+      kick();
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -331,6 +352,8 @@ export default function Cursor() {
           </div>
         </span>
       </div>
+      {/* 렌즈 테두리: 화면 위에 따로 얹어 아래 색과 곱해짐 → 배경색보다 한 톤 진한 선 */}
+      <div ref={ring} className={styles.ring} aria-hidden="true"><span /></div>
     </>
   );
 }

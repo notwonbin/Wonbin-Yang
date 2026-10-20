@@ -89,10 +89,10 @@ export default function Sidebar({ profile, projects }: Props) {
         </nav>
 
         <a
-          href="#about"
-          className={`${styles.about} ${current === "about" ? styles.aboutOn : ""}`}
+          href="#contact"
+          className={`${styles.about} ${current === "contact" ? styles.aboutOn : ""}`}
         >
-          About
+          Contact
         </a>
       </div>
       <Secret text={sidebarSecret} className={styles.secret} />

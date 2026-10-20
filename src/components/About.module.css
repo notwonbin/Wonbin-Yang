@@ -32,14 +32,6 @@
 }
 .row dt { font-size: var(--fs-caption); color: var(--ink-2); }
 
-.career { display: grid; row-gap: var(--space-1); }
-.career li {
-  display: grid;
-  grid-template-columns: 8.5em 9em 1fr;
-  column-gap: var(--space-4);
-}
-.period { font-variant-numeric: tabular-nums; }
-.position { color: var(--ink-2); }
 
 @media (max-width: 1024px) {
   .about { grid-template-columns: 1fr; row-gap: var(--space-5); }

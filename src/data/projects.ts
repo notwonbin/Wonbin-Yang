@@ -65,10 +65,10 @@ export const projects: Project[] = [
   },
   {
     slug: "possibility-to-reality",
-    title: "POSSIBILITY TO REALITY",
+    title: "Possibility to Reality",
     year: "2025",
-    category: "Graphic Design",
-    kind: "Graphic Design",
+    category: "Campaign Design",
+    kind: "Campaign Design",
     role: "—",
     company: "—",
     description:
@@ -112,11 +112,11 @@ export const projects: Project[] = [
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
-      { src: "/images/samsung-fire-insurance/01.jpg", alt: "Samsung Fire & Marine Insurance", ratio: "4/5" },
-      { src: "/images/samsung-fire-insurance/02.jpg", alt: "Samsung Fire & Marine Insurance", ratio: "4/5" },
-      { src: "/images/samsung-fire-insurance/03.jpg", alt: "Samsung Fire & Marine Insurance", ratio: "4/5" },
-      { src: "/images/samsung-fire-insurance/04.jpg", alt: "Samsung Fire & Marine Insurance", ratio: "4/5" },
-      { src: "/images/samsung-fire-insurance/05.jpg", alt: "Samsung Fire & Marine Insurance", ratio: "4/5" },
+      { src: "/images/samsung-fire-insurance/01.jpg", alt: "삼성화재", ratio: "4/5" },
+      { src: "/images/samsung-fire-insurance/02.jpg", alt: "삼성화재", ratio: "4/5" },
+      { src: "/images/samsung-fire-insurance/03.jpg", alt: "삼성화재", ratio: "4/5" },
+      { src: "/images/samsung-fire-insurance/04.jpg", alt: "삼성화재", ratio: "4/5" },
+      { src: "/images/samsung-fire-insurance/05.jpg", alt: "삼성화재", ratio: "4/5" },
     ],
   },
   {
@@ -139,7 +139,7 @@ export const projects: Project[] = [
   },
   {
     slug: "gangneung-tourism",
-    title: "Gangneung Tourism City Brand",
+    title: "Gangneung Tourism Brand",
     year: "2021",
     category: "Brand Design",
     kind: "Brand Design",
@@ -148,11 +148,11 @@ export const projects: Project[] = [
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
-      { src: "/images/gangneung-tourism/01.jpg", alt: "Gangneung Tourism City Brand", ratio: "4/5" },
-      { src: "/images/gangneung-tourism/02.jpg", alt: "Gangneung Tourism City Brand", ratio: "4/5" },
-      { src: "/images/gangneung-tourism/03.jpg", alt: "Gangneung Tourism City Brand", ratio: "4/5" },
-      { src: "/images/gangneung-tourism/04.jpg", alt: "Gangneung Tourism City Brand", ratio: "4/5" },
-      { src: "/images/gangneung-tourism/05.jpg", alt: "Gangneung Tourism City Brand", ratio: "4/5" },
+      { src: "/images/gangneung-tourism/01.jpg", alt: "Gangneung Tourism Brand", ratio: "4/5" },
+      { src: "/images/gangneung-tourism/02.jpg", alt: "Gangneung Tourism Brand", ratio: "4/5" },
+      { src: "/images/gangneung-tourism/03.jpg", alt: "Gangneung Tourism Brand", ratio: "4/5" },
+      { src: "/images/gangneung-tourism/04.jpg", alt: "Gangneung Tourism Brand", ratio: "4/5" },
+      { src: "/images/gangneung-tourism/05.jpg", alt: "Gangneung Tourism Brand", ratio: "4/5" },
     ],
   },
 ];
