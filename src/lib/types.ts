@@ -26,6 +26,8 @@ export type Project = {
   description: string;
   /** 표시 순서대로 나열 */
   media: ProjectMedia[];
+  /** (선택) 왼쪽 아래 작은 모션 — 흰 배경 MP4, 정사각형 (예: /images/<slug>/motion.mp4) */
+  motion?: string;
 };
 
 export type Profile = {

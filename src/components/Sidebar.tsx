@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Profile, Project } from "@/lib/types";
 import { pad } from "@/lib/format";
 import { sidebarSecret } from "@/data/secrets";
-import Scramble from "./Scramble";
-import SeoulTime from "./SeoulTime";
 import Secret from "./Secret";
 import styles from "./Sidebar.module.css";
 
@@ -20,6 +18,42 @@ const v = (i: number) => ({ "--i": i }) as React.CSSProperties;
 export default function Sidebar({ profile, projects }: Props) {
   const [current, setCurrent] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const asideRef = useRef<HTMLElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+
+  // 가장 긴 글자 줄이 끝나는 위치 → --side-text-w (경계 그라데이션이 여기서 시작)
+  useEffect(() => {
+    const aside = asideRef.current;
+    const inner = innerRef.current;
+    if (!aside || !inner) return;
+    const measure = () => {
+      const left = aside.getBoundingClientRect().left;
+      let right = 0;
+      const tw = document.createTreeWalker(inner, NodeFilter.SHOW_TEXT);
+      const range = document.createRange();
+      for (let n = tw.nextNode(); n; n = tw.nextNode()) {
+        if (!n.textContent?.trim()) continue;
+        range.selectNodeContents(n);
+        for (const r of range.getClientRects()) right = Math.max(right, r.right);
+      }
+      if (right) aside.style.setProperty("--side-text-w", `${Math.ceil(right - left)}px`);
+      // 연락처 값 열을 경력 기간 열과 같은 세로선에 맞춤 (경력 회사명 열 폭)
+      // 경력 → Works 간격 = 이름 블록 → 경력 간격 (세 덩어리가 같은 리듬)
+      const role = inner.querySelector("header > :last-child");
+      const career = inner.querySelector("dl");
+      if (role && career) {
+        const gap = career.getBoundingClientRect().top - role.getBoundingClientRect().bottom;
+        if (gap > 0) aside.style.setProperty("--works-gap", `${Math.round(gap)}px`);
+      }
+      const dt = inner.querySelector("dl dt");
+      if (dt) aside.style.setProperty("--label-w", `${Math.ceil(dt.getBoundingClientRect().width)}px`);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(inner);
+    document.fonts?.ready.then(measure);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-section]");
@@ -39,14 +73,14 @@ export default function Sidebar({ profile, projects }: Props) {
   const focus = hovered ?? current;
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.inner}>
+    <aside ref={asideRef} className={styles.sidebar}>
+      <div className={styles.edge} aria-hidden="true" />
+      <div ref={innerRef} className={styles.inner}>
         <header className={styles.id}>
           <a href="#top" className={`${styles.name} reveal`}>
-            <span style={v(0)}><Scramble text={profile.name} /></span>
+            <span style={v(0)}>{profile.name}</span>
           </a>
           <p className="reveal"><span style={v(1)}>{profile.role}</span></p>
-          <p className={`${styles.muted} reveal`}><span style={v(2)}>{profile.location}<SeoulTime /></span></p>
         </header>
 
         {/* 경력: 상단이 첫 카드 상단과 같은 가로선. 회사 열 폭 = 가장 긴 회사명 */}
@@ -88,12 +122,44 @@ export default function Sidebar({ profile, projects }: Props) {
           </ol>
         </nav>
 
-        <a
-          href="#contact"
-          className={`${styles.about} ${current === "contact" ? styles.aboutOn : ""}`}
-        >
-          Contact
-        </a>
+        {/* 연락처: 왼쪽 아래. 경력과 같은 형식 (라벨 | 값) */}
+        <div className={styles.contact}>
+          {/* 지금 보는 프로젝트의 작은 모션 (있는 프로젝트만). 흰 배경은 multiply 로 배경에 녹음 */}
+          <div className={styles.motion} aria-hidden="true">
+            {projects.map((p) =>
+              p.motion ? (
+                <video
+                  key={p.slug}
+                  ref={(el) => {
+                    if (!el) return;
+                    if (current === p.slug) el.play().catch(() => {});
+                    else el.pause();
+                  }}
+                  className={`${styles.motionClip} ${current === p.slug ? styles.motionOn : ""}`}
+                  src={p.motion}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                />
+              ) : null,
+            )}
+          </div>
+          <dl className={styles.career} aria-label="Contact">
+            <div className={styles.careerRow}>
+              <dt>Email</dt>
+              <dd><a href={`mailto:${profile.email}`} className={styles.contactLink}>{profile.email}</a></dd>
+            </div>
+            {profile.links.filter((l) => l.label !== "Behance").map((l) => (  // 사이드바엔 Behance 빼고 (맨 아래 Contact 에는 그대로)
+              <div key={l.label} className={styles.careerRow}>
+                <dt>{l.label}</dt>
+                <dd>
+                  <a href={l.href} target="_blank" rel="noreferrer" className={styles.contactLink}>{l.handle}</a>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
       <Secret text={sidebarSecret} className={styles.secret} />
     </aside>

@@ -6,11 +6,11 @@
  */
 :root {
   /* Color — 텍스트 3단계 */
-  --paper: #f4f4f2;          /* 흰 배경 이미지가 묻히지 않도록 한 톤 눌러 둠 */
-  --plate: #e9e9e6;          /* 이미지 로딩 전 자리 */
-  --ink: #3a3a38;            /* primary — 순검정 대신 한 톤 연한 먹색 */
-  --ink-2: #7c7c79;          /* secondary: 연도, 라벨 */
-  --ink-3: #b0b0ad;          /* inactive */
+  --paper: #ffffff;          /* 순백 배경 */
+  --plate: #e8e9ec;          /* 이미지 로딩 전 자리 */
+  --ink: #383a3f;            /* primary — 순검정 대신 살짝 푸른 먹색 (쿨톤) */
+  --ink-2: #7a7d83;          /* secondary: 연도, 라벨 */
+  --ink-3: #aeb1b6;          /* inactive */
 
   --font: "Inter Tight Variable", "Pretendard Variable", Pretendard, "Helvetica Neue", Helvetica, Arial,
     system-ui, sans-serif;
@@ -53,16 +53,18 @@
    *                 사이드바 이름 블록도 같은 높이 → 경력 블록 상단 = 카드 상단 (같은 가로선)
    *   --project-gap 카드 하단 → 다음 제목 (프로젝트 안쪽 여백보다 항상 크게)
    */
-  --rail-top: var(--space-5);
+  --rail-top: var(--margin);   /* 위 여백 = 좌우 여백 (사방 같은 틀) */
   --head-h: 128px;
   --project-gap: clamp(160px, 11vw, 208px);
 
   /* Gallery */
   --card-ratio: 4 / 5;
-  --card-gap: clamp(10px, 1vw, 16px);
+  --card-gap: 16px;   /* 카드 사이 간격 (고정, 간격 단계 --space-4) */
   --cards: 4.1;
   --card-gaps: 4;
-  --radius-media: 8px;
+  --radius-media: 8px;   /* 카드 모서리 */
+  --bg-shade: 0.06;      /* 배경 쿨톤 그라데이션 진하기 (0 = 끔) */
+  --bg-light: radial-gradient(120% 120% at 0% 0%, transparent 35%, rgb(40 60 100 / var(--bg-shade)) 100%);
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
@@ -116,9 +118,25 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/*
+ * 배경 빛 — 아주 미세한 쿨톤 그라데이션.
+ * 화면 왼쪽 위는 순백, 오른쪽 아래로 갈수록 아주 옅은 푸른 회색 → 위에서 빛이 비치는 느낌
+ * 화면에 고정이라 스크롤해도 빛의 방향은 그대로
+ * --bg-shade : 오른쪽 아래 끝 진하기 (0 = 끔)
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: var(--bg-light);
+}
+
 body {
   margin: 0;
   background: var(--paper);
+  transition: background-color 1.2s var(--ease); /* 프로젝트마다 배경색이 살짝 바뀔 때 (AmbientTint.tsx) */
   color: var(--ink);
   font-family: var(--font);
   font-size: var(--fs-body);

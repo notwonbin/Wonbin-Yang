@@ -3,6 +3,7 @@ import ScrollSnap from "@/components/ScrollSnap";
 import Cursor from "@/components/Cursor";
 import TabTitle from "@/components/TabTitle";
 import FocusDim from "@/components/FocusDim";
+import AmbientTint from "@/components/AmbientTint";
 import ProjectSection from "@/components/ProjectSection";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
@@ -28,6 +29,7 @@ export default function Home() {
       <Cursor />
       <TabTitle />
       <FocusDim />
+      <AmbientTint />
     </div>
   );
 }

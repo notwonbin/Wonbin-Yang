@@ -31,7 +31,7 @@
   border-radius: 50%;
   background: var(--ink);
   /* 어두운 이미지 위에서도 보이도록 아주 얇은 밝은 테두리 */
-  box-shadow: 0 0 0 1px rgb(244 244 242 / 0.55);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.55);
   transition:
     width var(--dur-base) var(--ease),
     height var(--dur-base) var(--ease),

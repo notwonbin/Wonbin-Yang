@@ -104,7 +104,7 @@ export default function Cursor() {
     const root = document.documentElement;
     root.classList.add("has-cursor");
     feImage.current?.setAttribute("href", lensMap());
-    const paper = getComputedStyle(root).getPropertyValue("--paper").trim() || "#f4f4f2";
+    const paper = getComputedStyle(root).getPropertyValue("--paper").trim() || "#ffffff";
 
     let mx = -100, my = -100;   // 마우스 위치
     let x = mx, y = my;         // 점 위치
@@ -149,7 +149,7 @@ export default function Cursor() {
       if (cv.width !== P) { cv.width = P; cv.height = P; }
       g.setTransform(d, 0, 0, d, 0, 0);
       g.imageSmoothingQuality = "high";
-      g.fillStyle = paper;
+      g.fillStyle = getComputedStyle(root).getPropertyValue("--paper").trim() || paper; // 배경색이 프로젝트마다 살짝 바뀌므로 매번 읽음
       g.fillRect(0, 0, W, W);
       const L = x - W / 2, T = y - W / 2;
       for (const m of document.querySelectorAll<Src>("[data-cursor] img, [data-cursor] video")) {
@@ -160,13 +160,15 @@ export default function Cursor() {
         const nw = isVid ? m.videoWidth : (pic as HTMLImageElement | null)?.naturalWidth ?? 0;
         const nh = isVid ? m.videoHeight : (pic as HTMLImageElement | null)?.naturalHeight ?? 0;
         if (!pic || !nw || !nh || (isVid && m.readyState < 2)) continue;
-        const frame = (m.closest("li") ?? m).getBoundingClientRect(); // 둥근 모서리 카드 영역
+        const card = m.closest("li") ?? m;
+        const frame = card.getBoundingClientRect();                  // 카드 영역
+        const radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0; // 카드 모서리 (--radius-media)
         const s = Math.max(b.width / nw, b.height / nh);             // object-fit: cover
         const ox = b.left + (b.width - nw * s) / 2;
         const oy = b.top + (b.height - nh * s) / 2;
         g.save();
         g.beginPath();
-        g.roundRect(frame.left - L, frame.top - T, frame.width, frame.height, 8);
+        g.roundRect(frame.left - L, frame.top - T, frame.width, frame.height, radius);
         g.clip();
         g.drawImage(pic, ox - L, oy - T, nw * s, nh * s);
         g.restore();
@@ -184,7 +186,7 @@ export default function Cursor() {
 
     /**
      * 링크 칸이 글자보다 넓을 수 있어서(블록 링크), 실제 글자 위에 있을 때만 반응
-     * (예: 이름 링크는 사이드바 폭 전체지만 'YANG WONBIN' 글자 위에서만)
+     * (예: 이름 링크는 사이드바 폭 전체지만 'Wonbin Yang' 글자 위에서만)
      */
     const onText = (link: Element, px: number, py: number) => {
       const r = document.createRange();

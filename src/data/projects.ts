@@ -6,6 +6,7 @@ import type { Project } from "@/lib/types";
  * - kind + year → 왼쪽 목록의 "Event Design, 2026" 부분
  * - media는 표시 순서대로. 이미지(.jpg .png .webp)와 영상(.mp4 .webm)을 섞어 쓸 수 있습니다.
  * - 파일은 public/images/<slug>/ 아래에 넣고 경로를 적어주세요. 카드는 모두 4:5 비율입니다.
+ * - motion(선택): 왼쪽 아래에 보이는 작은 반복 모션. 흰 배경 정사각형 MP4 (public/images/<slug>/motion.mp4)
  * - "—" 와 "프로젝트 설명을 입력해 주세요." 는 아직 채우지 않은 자리입니다.
  */
 export const projects: Project[] = [
@@ -26,6 +27,7 @@ export const projects: Project[] = [
       { src: "/images/animal-league-2026/04.mp4", alt: "Animal League 2026", ratio: "4/5" },
       { src: "/images/animal-league-2026/05.mp4", alt: "Animal League 2026", ratio: "4/5" },
     ],
+    motion: "/images/animal-league-2026/motion.mp4",
   },
   {
     slug: "gwanghwamun-lions",

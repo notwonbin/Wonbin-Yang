@@ -10,14 +10,14 @@ export default function About({ profile }: { profile: Profile }) {
         <div className={styles.row}>
           <dt>Email</dt>
           <dd>
-            <a href={`mailto:${profile.email}`} className="link-underline">{profile.email}</a>
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
           </dd>
         </div>
         {profile.links.map((l) => (
           <div key={l.label} className={styles.row}>
             <dt>{l.label}</dt>
             <dd>
-              <a href={l.href} target="_blank" rel="noreferrer" className="link-underline">{l.handle}</a>
+              <a href={l.href} target="_blank" rel="noreferrer">{l.handle}</a>
             </dd>
           </div>
         ))}

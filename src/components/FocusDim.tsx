@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { cssPx } from "@/lib/cssPx";
 
 /**
  * 화면 아래쪽에 걸쳐 보이는 다음 프로젝트 '카드'만 흐리게 → 지금 프로젝트에 집중.
@@ -32,7 +33,7 @@ export default function FocusDim() {
 
     /** 제자리에 멈췄을 때 다음 프로젝트 카드 윗선의 화면 y */
     const restingStart = (list: HTMLElement[]) => {
-      const railTop = parseFloat(getComputedStyle(root).getPropertyValue("--rail-top")) || 24;
+      const railTop = cssPx("--rail-top", 24);
       // 첫 프로젝트는 위 여백이 따로 있어서 2·3번째로 잼 (모든 프로젝트 간격 동일)
       const a = list[1], b = list[2];
       const ul = b && ulOf(b);

@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { profile } from "@/data/profile";
 import "./globals.css";
 
-const title = "Yang Wonbin — BX / Brand Designer";
-const description = "Selected brand identity and BX design work by Yang Wonbin, 2023 — 2026. Seoul, KR.";
+const title = "Wonbin Yang — Brand Designer";
+const description = "Selected brand identity and BX design work by Wonbin Yang, 2023 — 2026. Seoul, KR.";
 
 export const metadata: Metadata = {
   // 배포 도메인으로 바꿔주세요
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f4f4f2",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };

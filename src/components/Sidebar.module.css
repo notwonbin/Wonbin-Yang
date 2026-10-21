@@ -4,6 +4,24 @@
   top: 0;
   height: 100svh;
   align-self: start;
+  --motion-size: 140px;      /* 왼쪽 아래 프로젝트 모션 크기 */
+  --side-shade: 0.025;        /* 경계 그라데이션 끝(가장 진한 곳) 진하기 (0 = 끔) */
+}
+/*
+ * 사이드바 경계 — 배경은 그대로 흰색, '경계에만' 얇은 그라데이션.
+ * 가장 긴 글자 줄 끝(--side-text-w, Sidebar.tsx 가 잼)에서 시작해 점점 진해지다가
+ * 글자 끝과 첫 카드 사이의 정가운데에서 흰 배경으로 딱 끊김
+ * 색은 쿨톤 회색 (--ink 와 같은 푸른 기)
+ */
+.edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--side-text-w, 100%);
+  right: calc((100% - var(--side-text-w, 100%) - var(--gutter)) / 2);
+  background: linear-gradient(to right, transparent, rgb(24 32 48 / var(--side-shade)));
+  pointer-events: none;
+  z-index: -1;
 }
 .inner {
   height: 100%;
@@ -45,7 +63,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.works { margin-top: var(--space-7); }
+.works { margin-top: var(--works-gap, var(--space-7)); }   /* = 이름 블록 → 경력 간격 (Sidebar.tsx 가 잼) */
 
 /* Works 라벨: 회사명과 같은 강조 */
 .label {
@@ -91,24 +109,57 @@
 .hasFocus .item.on .kind { color: var(--ink-2); }
 /* hover: 2px 이동 — 누를 수 있다는 신호 */
 /* 숨은 글자: Works 와 About 사이 빈 곳 */
-.secret { left: 0; bottom: 96px; }
+.secret { left: 0; bottom: 300px; }
 
 @media (hover: hover) {
   .item:hover .text { transform: translateX(2px); }
 }
 
-.about {
+/* 연락처 블록: 맨 아래에 붙음. 값은 경력 기간처럼 한 단계 연하게 */
+.contact {
   margin-top: auto;
-  align-self: flex-start;
+}
+/* 왼쪽 아래 프로젝트 모션 — 프로젝트가 바뀌면 교차로 전환. 흰 배경은 multiply 로 사라짐 */
+.motion {
+  position: relative;
+  width: var(--motion-size);
+  height: var(--motion-size);
+  margin: 0 0 var(--space-5) calc(var(--motion-size) * -0.28);  /* 영상 안 여백만큼 왼쪽으로 → 캐릭터 왼쪽이 글자 세로선에 오게 */
+  pointer-events: none;
+  /* 페이지 배경(흰색 + 쿨톤 그라데이션)을 화면 기준으로 똑같이 깔아 둠 → 영상의 흰 배경이 multiply 로 그 위에 녹아 사라짐
+     (사이드바가 따로 겹을 만들어서, 이 바탕이 없으면 흰 네모가 보임) */
+  background: var(--bg-light), var(--paper);
+  background-attachment: fixed;
+  isolation: isolate;
+}
+.motionClip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+.motionOn { opacity: 1; transform: none; }
+
+.contact .career {
+  margin-top: 0;
+  grid-template-columns: var(--label-w, max-content) auto;  /* 값 열 = 경력 기간 열과 같은 세로선 */
+}
+.contactLink {
   color: var(--ink-2);
   transition: color var(--dur-fast) var(--ease);
 }
-.aboutOn,
-.about:hover { color: var(--ink); }
+.contactLink:hover { color: var(--ink); }
 
 /* 모바일: 고정 해제, 맨 위 일반 블록 */
 @media (max-width: 680px) {
   .secret { display: none; }
+  .motion { display: none; }
+  .edge { display: none; }
   .sidebar {
     grid-column: 1 / -1;
     position: static;
@@ -117,7 +168,7 @@
   .inner { padding-bottom: var(--space-8); }
   .id { min-height: 0; margin-bottom: var(--space-6); }
   .works { margin-top: var(--space-8); }
-  .about { margin-top: var(--space-5); }
+  .contact { margin-top: var(--space-8); }
   .hasFocus .item,
   .hasFocus .item .num { color: var(--ink); }
   .hasFocus .item .kind { color: var(--ink-2); }

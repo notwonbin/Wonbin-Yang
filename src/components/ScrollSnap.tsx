@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { cssPx } from "@/lib/cssPx";
 
 /**
  * 데스크톱 전용 부드러운 스크롤 + 프로젝트 스냅.
@@ -38,7 +39,7 @@ export default function ScrollSnap() {
 
     const maxY = () => root.scrollHeight - window.innerHeight;
     const clamp = (n: number) => Math.max(0, Math.min(maxY(), n));
-    const railTop = () => parseFloat(getComputedStyle(root).getPropertyValue("--rail-top")) || 24;
+    const railTop = () => cssPx("--rail-top", 24);
 
     const stops = () => {
       const list = [...document.querySelectorAll<HTMLElement>("[data-section]")].map((el) => {
