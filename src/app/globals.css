@@ -98,7 +98,7 @@
   :root { --cols: 8; --cards: 2.2; --card-gaps: 2; --head-h: 232px; --project-gap: 144px; }
 }
 @media (max-width: 680px) {
-  :root { --cols: 4; --cards: 1.1; --card-gaps: 1; --head-h: 300px; }
+  :root { --cols: 4; --cards: 1.1; --card-gaps: 1; --head-h: auto; --project-gap: 88px; }
 }
 
 /* ───────────────── Base ───────────────── */

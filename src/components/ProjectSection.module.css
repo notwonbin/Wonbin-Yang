@@ -63,11 +63,20 @@
   .description { grid-column: 2; }
 }
 
+/* 모바일: 헤더 높이 고정을 풀고 내용만큼만, 글자는 읽기 좋게 한 단계 크게 */
 @media (max-width: 680px) {
-  .head { grid-template-columns: 1fr; }
+  .head {
+    grid-template-columns: 1fr;
+    height: auto;
+    row-gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
   .head > div:first-child,
   .facts,
   .description { grid-column: 1 / -1; }
+  .facts { font-size: 12px; }
+  .facts dt { font-size: 12px; }
+  .description { font-size: 13px; }
 }
 
 /* 숨은 글자: 이 프로젝트 아래 여백(다음 프로젝트 전) 한가운데, --y 만큼 위아래로 흩어짐 */

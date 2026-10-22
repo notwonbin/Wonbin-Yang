@@ -145,20 +145,13 @@ export default function Sidebar({ profile, projects }: Props) {
               ) : null,
             )}
           </div>
-          <dl className={styles.career} aria-label="Contact">
-            <div className={styles.careerRow}>
-              <dt>Email</dt>
-              <dd><a href={`mailto:${profile.email}`} className={styles.contactLink}>{profile.email}</a></dd>
-            </div>
-            {profile.links.filter((l) => l.label !== "Behance").map((l) => (  // 사이드바엔 Behance 빼고 (맨 아래 Contact 에는 그대로)
-              <div key={l.label} className={styles.careerRow}>
-                <dt>{l.label}</dt>
-                <dd>
-                  <a href={l.href} target="_blank" rel="noreferrer" className={styles.contactLink}>{l.handle}</a>
-                </dd>
-              </div>
+          {/* 연락처 한 줄: 누르면 바로 메일 / LinkedIn / Behance */}
+          <nav className={styles.contactRow} aria-label="Contact">
+            <a href={`mailto:${profile.email}`} className={styles.contactLink}>Email</a>
+            {profile.links.map((l) => (
+              <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className={styles.contactLink}>{l.label}</a>
             ))}
-          </dl>
+          </nav>
         </div>
       </div>
       <Secret text={sidebarSecret} className={styles.secret} />

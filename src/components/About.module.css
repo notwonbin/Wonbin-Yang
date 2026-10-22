@@ -40,3 +40,8 @@
   .career li { grid-template-columns: 1fr; }
   .career li + li { margin-top: var(--space-2); }
 }
+
+@media (max-width: 680px) {
+  .about { padding-bottom: var(--space-8); }
+  .row { padding: 4px 0; }   /* 손가락으로 누르기 쉽게 */
+}
