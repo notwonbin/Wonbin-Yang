@@ -2,10 +2,11 @@ import Sidebar from "@/components/Sidebar";
 import ScrollSnap from "@/components/ScrollSnap";
 import Cursor from "@/components/Cursor";
 import TabTitle from "@/components/TabTitle";
-import FocusDim from "@/components/FocusDim";
 import AmbientTint from "@/components/AmbientTint";
+import ThemeToggle from "@/components/ThemeToggle";
+import SectionFocus from "@/components/SectionFocus";
+import FocusDim from "@/components/FocusDim";
 import ProjectSection from "@/components/ProjectSection";
-import About from "@/components/About";
 import Footer from "@/components/Footer";
 import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
@@ -21,15 +22,16 @@ export default function Home() {
           {projects.map((project, i) => (
             <ProjectSection key={project.slug} project={project} secrets={secretsFor(i)} />
           ))}
-          <About profile={profile} />
         </main>
         <Footer profile={profile} />
       </div>
       <ScrollSnap />
       <Cursor />
       <TabTitle />
-      <FocusDim />
       <AmbientTint />
+      <ThemeToggle />
+      <SectionFocus />
+      <FocusDim />
     </div>
   );
 }

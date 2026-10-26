@@ -1,0 +1,26 @@
+/*
+ * 화면 오른쪽 위 고정 아이콘 — 이름과 같은 높이(--rail-top), 오른쪽 여백(--margin)에 맞춤.
+ * difference 섞기 → 흰 배경·검은 배경·이미지 위 어디서든 보임
+ */
+.toggle {
+  position: fixed;
+  top: calc(var(--rail-top) - 9px);     /* 아이콘 중심 ≈ 이름 첫 줄 가운데 */
+  right: calc(var(--margin) - 9px);
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  width: 32px;                           /* 누르는 영역은 넉넉하게 */
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  mix-blend-mode: difference;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.toggle:hover { opacity: 1; }
+.toggle svg { transition: transform 500ms var(--ease); }
+/* 어두운 화면에선 반쪽이 반대편으로 */
+.toggle[data-theme-icon="dark"] svg { transform: rotate(180deg); }

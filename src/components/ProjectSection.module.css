@@ -20,31 +20,42 @@
   align-items: first baseline;
   align-content: start;
   height: var(--head-h);
+  position: relative;
 }
 .head > div:first-child { grid-column: 1; }
 
 .title,
 .year {
   font-size: var(--fs-title);
-  line-height: var(--lh-title);
+  line-height: var(--head-line);   /* 제목·연도·Role·Company 가 같은 줄 높이 → 기준선 공유 */
   letter-spacing: var(--tr-title);
 }
-.title { font-weight: var(--fw-medium); }
+.title { font-weight: var(--fw-strong); }   /* 볼드 */
 .year { color: var(--ink-2); font-variant-numeric: tabular-nums; }
 
+/*
+ * Role · Company — 라벨은 진하게, 값은 연하게.
+ * 줄 높이 = 제목 줄 높이 → Role 은 제목과, Company 는 연도와 같은 줄에 정확히 놓임
+ */
 .facts {
-  grid-column: 2;
+  grid-column: 2 / -1;   /* 설명을 숨겨서 그 칸까지 넓게 → Role 이 길어도 한 줄 */
   display: grid;
-  row-gap: 3px;
-  font-size: var(--fs-meta);
-  line-height: var(--lh-ui);
+  grid-template-columns: max-content minmax(0, 1fr);   /* 라벨 칸 = 가장 긴 라벨(직책·Company) 폭, 두 줄이 같은 세로선 */
+  column-gap: var(--space-4);
+  row-gap: 0;
+  font-size: var(--fs-facts);
+  line-height: var(--head-line);
 }
-.facts > div {
-  display: grid;
-  grid-template-columns: 5.5em 1fr;
-  column-gap: var(--space-2);
+.facts > div { display: contents; }
+.facts dt { color: var(--ink); font-weight: var(--fw-strong); }   /* Role · Company 볼드 */
+.facts dd { color: var(--ink-2); }
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-4);   /* 작업 범위끼리는 기호 없이 간격만 */
 }
-.facts dt { font-size: var(--fs-caption); color: var(--ink-2); }
+.roles span { white-space: nowrap; }
+
 
 .description {
   grid-column: 3;
@@ -59,7 +70,7 @@
 @media (max-width: 1024px) {
   .head { grid-template-columns: var(--col) minmax(0, 1fr); }
   .head > div:first-child { grid-column: 1 / -1; }
-  .facts { grid-column: 1; }
+  .facts { grid-column: 1 / -1; }
   .description { grid-column: 2; }
 }
 
@@ -74,10 +85,11 @@
   .head > div:first-child,
   .facts,
   .description { grid-column: 1 / -1; }
-  .facts { font-size: 12px; }
-  .facts dt { font-size: 12px; }
   .description { font-size: 13px; }
 }
+
+/* 프로젝트 설명 — 지금은 숨김 (projects.ts 의 description 은 그대로). 다시 보이려면 이 줄만 지우면 됨 */
+.description { display: none !important; }
 
 /* 숨은 글자: 이 프로젝트 아래 여백(다음 프로젝트 전) 한가운데, --y 만큼 위아래로 흩어짐 */
 .secret { bottom: calc(var(--project-gap) / 2 - 12px + var(--y, 0px)); }

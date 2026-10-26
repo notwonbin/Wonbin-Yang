@@ -12,11 +12,12 @@ import type { Project } from "@/lib/types";
 export const projects: Project[] = [
   {
     slug: "animal-league-2026",
-    title: "ANIMAL LEAGUE 2026",
+    title: "ANIMAL LEAGUE",
     year: "2026",
     category: "Event Branding",
     kind: "Event Design",
     role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
     company: "멋쟁이사자처럼",
     description:
       "ANIMAL LEAGUE 2026은 전국 80개 대학, 약 2,300명이 참여한 대규모 대학 해커톤의 이벤트 브랜딩 프로젝트입니다. 프로젝트 리드로서 브랜드 아이덴티티를 비롯해 캐릭터, 그래픽, 영상, 공간 등 온·오프라인 전반의 디자인을 총괄하며, 행사 전체를 아우르는 일관된 브랜드 경험을 구축했습니다.",
@@ -35,8 +36,9 @@ export const projects: Project[] = [
     year: "2025",
     category: "Graphic Asset Design",
     kind: "Graphic Asset Design",
-    role: "—",
-    company: "NAVER Pay",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "Plus X",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -53,11 +55,13 @@ export const projects: Project[] = [
   {
     slug: "samsung-fire-insurance",
     title: "Samsung Fire & Marine Insurance",
+    short: "Samsung Fire & Marine",
     year: "2024",
     category: "Illustration Design",
     kind: "Illustration Design",
-    role: "—",
-    company: "Samsung Fire & Marine Insurance",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "Plus X",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -67,6 +71,7 @@ export const projects: Project[] = [
       { src: "/images/samsung-fire-insurance/04.jpg", alt: "삼성화재", ratio: "4/5" },
       { src: "/images/samsung-fire-insurance/05.jpg", alt: "삼성화재", ratio: "4/5" },
     ],
+    motion: "/images/samsung-fire-insurance/motion.mp4",
   },
   {
     slug: "kbo",
@@ -74,8 +79,9 @@ export const projects: Project[] = [
     year: "2022",
     category: "Brand Design",
     kind: "Brand Design",
-    role: "—",
-    company: "KBO",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "Mass C&G",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -85,6 +91,7 @@ export const projects: Project[] = [
       { src: "/images/kbo/04.jpg", alt: "KBO", ratio: "4/5" },
       { src: "/images/kbo/05.jpg", alt: "KBO", ratio: "4/5" },
     ],
+    motion: "/images/kbo/motion.mp4",
   },
   {
     slug: "gwanghwamun-lions",
@@ -92,8 +99,9 @@ export const projects: Project[] = [
     year: "2026",
     category: "Event Design",
     kind: "Event Design",
-    role: "—",
-    company: "—",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "멋쟁이사자처럼",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -103,6 +111,7 @@ export const projects: Project[] = [
       { src: "/images/gwanghwamun-lions/04.jpg", alt: "Gwanghwamun Lions", ratio: "4/5" },
       { src: "/images/gwanghwamun-lions/05.jpg", alt: "Gwanghwamun Lions", ratio: "4/5" },
     ],
+    motion: "/images/gwanghwamun-lions/motion.mp4",
   },
   {
     slug: "hack-it",
@@ -110,8 +119,9 @@ export const projects: Project[] = [
     year: "2026",
     category: "Graphic Design",
     kind: "Graphic Design",
-    role: "—",
-    company: "—",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "멋쟁이사자처럼",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -128,8 +138,9 @@ export const projects: Project[] = [
     year: "2025",
     category: "Campaign Design",
     kind: "Campaign Design",
-    role: "—",
-    company: "—",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "멋쟁이사자처럼",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [
@@ -146,8 +157,9 @@ export const projects: Project[] = [
     year: "2021",
     category: "Brand Design",
     kind: "Brand Design",
-    role: "—",
-    company: "Gangneung City",
+    role: "Project Lead",
+    scope: "Identity Design · Character Design · Color System · Key Visual · Experience Design",
+    company: "Mass C&G",
     description:
       "프로젝트 설명을 입력해 주세요.",
     media: [

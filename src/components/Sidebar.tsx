@@ -5,6 +5,7 @@ import type { Profile, Project } from "@/lib/types";
 import { pad } from "@/lib/format";
 import { sidebarSecret } from "@/data/secrets";
 import Secret from "./Secret";
+import { useTheme } from "./ThemeToggle";
 import styles from "./Sidebar.module.css";
 
 type Props = { profile: Profile; projects: Project[] };
@@ -71,6 +72,7 @@ export default function Sidebar({ profile, projects }: Props) {
   }, []);
 
   const focus = hovered ?? current;
+  const theme = useTheme();
 
   return (
     <aside ref={asideRef} className={styles.sidebar}>
@@ -113,7 +115,7 @@ export default function Sidebar({ profile, projects }: Props) {
                 >
                   <span className={styles.num}>{pad(i)}</span>
                   <span className={styles.text}>
-                    {p.title}
+                    {p.short ?? p.title}
                     <span className={styles.kind}>{p.kind ?? p.category}, {p.year}</span>
                   </span>
                 </a>
@@ -136,7 +138,7 @@ export default function Sidebar({ profile, projects }: Props) {
                     else el.pause();
                   }}
                   className={`${styles.motionClip} ${current === p.slug ? styles.motionOn : ""}`}
-                  src={p.motion}
+                  src={/* 어두운 화면용: 같은 폴더의 motion-dark.mp4 */ theme === "dark" ? p.motion.replace(/\.mp4$/, "-dark.mp4") : p.motion}
                   muted
                   loop
                   playsInline

@@ -16,11 +16,16 @@ export type Project = {
   /** URL 앵커로 쓰임 (#slug). 영문 소문자 + 하이픈 */
   slug: string;
   title: string;
+  /** (선택) 왼쪽 Works 목록에만 쓰는 짧은 이름. 없으면 title */
+  short?: string;
   year: string;
   category: string;
   /** (선택) 왼쪽 Works 목록에 '제목 + 분류, 연도'로 보이는 짧은 분류. 없으면 category 사용 */
   kind?: string;
+  /** 직책 — Role 줄 맨 앞에 보임 (예: Project Lead) */
   role: string;
+  /** (선택) 작업 범위 — Role 줄에서 직책 뒤에 간격으로 나열. "A · B · C" 처럼 · 로 구분해서 적기 */
+  scope?: string;
   /** 작업 당시 소속 회사 */
   company: string;
   description: string;

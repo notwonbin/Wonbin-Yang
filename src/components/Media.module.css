@@ -18,9 +18,12 @@
 }
 .loaded { opacity: 1; }
 
-/* 거의 인지되지 않는 반응: 0.7초 동안 2% */
+/* 카드 hover: 이미지가 천천히 4% 커짐 — 눌러볼 수 있다는 신호 (카드 틀·모서리는 그대로) */
 @media (hover: hover) and (pointer: fine) {
-  .frame:hover .el { transform: scale(1.02); }
+  .frame:hover .el {
+    transform: scale(1.04);
+    transition: opacity var(--dur-slow) var(--ease), transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
 }
 
 @media (scripting: none) {

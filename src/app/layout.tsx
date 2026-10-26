@@ -28,7 +28,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* 저장된 테마(밝은/어두운)를 그리기 전에 적용 → 깜빡임 없음 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

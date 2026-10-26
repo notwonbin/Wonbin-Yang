@@ -19,6 +19,10 @@
   --fs-title: 16px;
   --fs-body: 12px;
   --fs-meta: 11px;
+  --fs-facts: 12px;      /* 프로젝트 Role · Company — 줄 높이(제목과 공유)에 맞는 행간 */
+  --rule: color-mix(in srgb, var(--ink) 12%, transparent);   /* 가는 선 색 (밝은/어두운 화면 자동) */
+  --rule-top: 16px;      /* 프로젝트 사이 가는 선 ~ 아래 프로젝트 제목 윗선 거리 */
+  --head-line: 23px;     /* 프로젝트 헤더 줄 높이 (제목 · 연도 · Role · Company 공통) */
   --fs-caption: 11px;
   --lh-title: 1.2;
   --lh-body: 1.55;
@@ -54,8 +58,8 @@
    *   --project-gap 카드 하단 → 다음 제목 (프로젝트 안쪽 여백보다 항상 크게)
    */
   --rail-top: var(--margin);   /* 위 여백 = 좌우 여백 (사방 같은 틀) */
-  --head-h: 128px;
-  --project-gap: clamp(160px, 11vw, 208px);
+  --head-h: 120px;
+  --project-gap: clamp(136px, 10.5vw, 192px);   /* 헤더→카드(약 73px)의 2배 안팎 → 선 없이도 프로젝트 단위가 분명 */
 
   /* Gallery */
   --card-ratio: 4 / 5;
@@ -64,7 +68,10 @@
   --card-gaps: 4;
   --radius-media: 8px;   /* 카드 모서리 */
   --bg-shade: 0.06;      /* 배경 쿨톤 그라데이션 진하기 (0 = 끔) */
-  --bg-light: radial-gradient(120% 120% at 0% 0%, transparent 35%, rgb(40 60 100 / var(--bg-shade)) 100%);
+  --bg-tint: 40 60 100;  /* 배경 그라데이션 색 */
+  --bg-light: radial-gradient(120% 120% at 0% 0%, transparent 35%, rgb(var(--bg-tint) / var(--bg-shade)) 100%);
+  --shade-rgb: 24 32 48;  /* 사이드바 경계 그라데이션 색 */
+  --dot-ring: rgb(255 255 255 / 0.55);  /* 커서 점 테두리 (어두운 이미지 위에서도 보이게) */
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
@@ -89,13 +96,13 @@
   :root { --cards: 3.3; --card-gaps: 3; }
 }
 @media (max-width: 1439px) {
-  :root { --head-h: 144px; }
+  :root { --head-h: 120px; }
 }
 @media (max-width: 1199px) {
-  :root { --head-h: 176px; }
+  :root { --head-h: 128px; }
 }
 @media (max-width: 1024px) {
-  :root { --cols: 8; --cards: 2.2; --card-gaps: 2; --head-h: 232px; --project-gap: 144px; }
+  :root { --cols: 8; --cards: 2.2; --card-gaps: 2; --head-h: 152px; --project-gap: 144px; }
 }
 @media (max-width: 680px) {
   :root { --cols: 4; --cards: 1.1; --card-gaps: 1; --head-h: auto; --project-gap: 88px; }
@@ -160,6 +167,21 @@ a {
 }
 
 img { display: block; max-width: 100%; }
+
+/*
+ * 어두운 화면 — 색 값만 바꿈 (구성·간격은 그대로). ThemeToggle 로 전환
+ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f1012;
+  --plate: #1c1e22;
+  --ink: #e4e6ea;
+  --ink-2: #8a8e95;
+  --ink-3: #4d5057;
+  --bg-tint: 150 175 220;     /* 어두운 화면에선 오른쪽 아래가 아주 살짝 밝아짐 */
+  --shade-rgb: 170 190 230;
+  --dot-ring: rgb(0 0 0 / 0.55);
+}
 
 ::selection {
   background: var(--ink);

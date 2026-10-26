@@ -5,7 +5,7 @@
   height: 100svh;
   align-self: start;
   --motion-size: 140px;      /* 왼쪽 아래 프로젝트 모션 크기 */
-  --side-shade: 0.025;        /* 경계 그라데이션 끝(가장 진한 곳) 진하기 (0 = 끔) */
+  --side-shade: 0.045;        /* 경계 그라데이션 끝(가장 진한 곳) 진하기 (0 = 끔) */
 }
 /*
  * 사이드바 경계 — 배경은 그대로 흰색, '경계에만' 얇은 그라데이션.
@@ -19,7 +19,7 @@
   bottom: 0;
   left: var(--side-text-w, 100%);
   right: calc((100% - var(--side-text-w, 100%) - var(--gutter)) / 2);
-  background: linear-gradient(to right, transparent, rgb(24 32 48 / var(--side-shade)));
+  background: linear-gradient(to right, transparent, rgb(var(--shade-rgb) / var(--side-shade)));
   pointer-events: none;
   z-index: -1;
 }
@@ -39,7 +39,7 @@
 .name {
   display: block;
   font-size: var(--fs-title);
-  line-height: var(--lh-title);
+  line-height: var(--head-line);   /* 프로젝트 제목과 같은 줄 높이 → 이름과 제목 기준선이 같은 가로선 */
   font-weight: var(--fw-strong);
   letter-spacing: var(--tr-title);
   margin-bottom: var(--space-1);
@@ -54,6 +54,7 @@
   justify-content: start;
   margin-top: -3px;          /* 행 패딩만큼 올려 첫 줄 글자 상단 = 카드 상단 */
   line-height: var(--lh-ui);
+  position: relative;
 }
 .careerRow { display: contents; }
 .careerRow > * { padding: 3px 0; }
@@ -122,7 +123,7 @@
 /* 왼쪽 아래 프로젝트 모션 — 프로젝트가 바뀌면 교차로 전환. 흰 배경은 multiply 로 사라짐 */
 .motion {
   position: relative;
-  width: var(--motion-size);
+  width: calc(var(--motion-size) * 1.4);   /* 가로로 넓은 모션(560×400)도 들어가게. 정사각형 모션은 왼쪽에 그대로 */
   height: var(--motion-size);
   margin: 0 0 var(--space-5) calc(var(--motion-size) * -0.28);  /* 영상 안 여백만큼 왼쪽으로 → 캐릭터 왼쪽이 글자 세로선에 오게 */
   pointer-events: none;
@@ -138,12 +139,15 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply;
+  object-position: left bottom;
+  mix-blend-mode: multiply;   /* 흰 배경 영상 → 흰색이 사라짐 */
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 600ms var(--ease), transform 600ms var(--ease);
 }
 .motionOn { opacity: 1; transform: none; }
+/* 어두운 화면: 검은 배경 영상(motion-dark.mp4) + screen → 검은색이 사라짐 */
+:global(html[data-theme="dark"]) .motionClip { mix-blend-mode: screen; }
 
 .contactRow {
   display: flex;
