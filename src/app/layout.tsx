@@ -8,7 +8,7 @@ const description = "Selected brand identity and BX design work by Wonbin Yang, 
 export const metadata: Metadata = {
   // 배포 도메인으로 바꿔주세요
   metadataBase: new URL("https://yangwonbin.com"),
-  title,
+  title: "wonbin-yang",   // 브라우저 탭에 보이는 이름 (공유 미리보기는 아래 openGraph 의 title)
   description,
   openGraph: {
     title,
